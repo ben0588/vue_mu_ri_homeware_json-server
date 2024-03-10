@@ -1,17 +1,14 @@
-# 使用 Node.js 官方映像作為基礎映像
-FROM node:current-slim
+# 使用 Node.js 官方基礎映像
+FROM node:latest
 
 # 設定工作目錄
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# 複製專案檔案到工作目錄
-COPY . .
+# 複製您的 db.json 和 start.sh 到容器中
+COPY db.json ./
+COPY start.sh ./
 
-# 使用 npm 安裝 json-server
-RUN npm install -g json-server@latest
+# 執行啟動腳本來安裝 JSON Server 和 cors，並啟動服務
+CMD ["./start.sh"]
 
-# 開放 json-server 使用的端口（預設為 3000）
-EXPOSE 3000
 
-# 啟動 json-server
-CMD ["json-server", "--watch", "db.json", "--port", "3000"]
